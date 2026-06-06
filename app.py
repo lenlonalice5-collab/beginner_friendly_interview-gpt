@@ -1,5 +1,5 @@
 import gradio as gr
-
+from report import (generate_report,generate_skill_report)
 from questions import questions
 from scorer import score_answer
 question_list = questions[
@@ -42,11 +42,12 @@ def submit_answer(answer):
     )
 
     results.append(
-        {
-            "question": question,
-            "answer": answer,
-            "score": score
-        }
+    {
+        "skill": question_list[current_index]["skill"],
+        "question": question,
+        "answer": answer,
+        "score": score
+    }
     )
 
     current_index += 1
@@ -65,6 +66,22 @@ def submit_answer(answer):
         next_question,
         feedback
     )
+def create_ai_report():
+
+    global results
+
+    if len(results) == 0:
+        return "暂无面试记录"
+
+    return generate_report(results)
+def create_skill_report():
+
+    global results
+
+    if len(results) == 0:
+        return "暂无成绩"
+
+    return generate_skill_report(results)
 def show_result():
 
     if len(results) == 0:
@@ -79,10 +96,10 @@ def show_result():
     avg = total / len(results)
 
     report = f"""
-已完成题目数：{len(results)}
+    已完成题目数：{len(results)}
 
-平均分：{avg:.1f}
-"""
+    平均分：{avg:.1f}
+    """
 
     return report
 with gr.Blocks() as demo:
@@ -113,6 +130,22 @@ with gr.Blocks() as demo:
     report_btn = gr.Button(
         "查看成绩"
     )
+    ai_report_btn = gr.Button(
+    "生成面试报告"
+    )
+
+    skill_btn = gr.Button(
+    "能力画像"
+    )
+    ai_report_box = gr.Textbox(
+    label="AI面试报告",
+    lines=15
+    )
+
+    skill_box = gr.Textbox(
+    label="能力画像",
+    lines=10
+    )
 
     report_box = gr.Textbox(
         label="成绩统计"
@@ -131,5 +164,17 @@ with gr.Blocks() as demo:
         show_result,
         outputs=report_box
     )
+    ai_report_btn.click(
+        create_ai_report,
+        outputs=ai_report_box
+    )
+    skill_btn.click(
+        create_skill_report,
+        outputs=skill_box
+    )
+
+
+
+
 
 demo.launch()
