@@ -7,6 +7,13 @@ from history import (
     save_history,
     load_history
 )
+from radar_chart import create_radar_chart
+
+from report import (
+    generate_statistics,
+    generate_skill_scores
+)
+
 
 question_list = questions[
     "AI应用开发工程师"
@@ -118,6 +125,18 @@ def create_pdf():
 
     return "PDF已生成"
 
+skill_scores = generate_skill_scores(
+    results
+)
+
+create_radar_chart(
+    skill_scores
+)
+
+stats = generate_statistics(
+    results
+)
+
 with gr.Blocks() as demo:
 
     gr.Markdown(
@@ -183,6 +202,10 @@ with gr.Blocks() as demo:
 
     pdf_status = gr.Textbox(
     label="PDF状态"
+    )
+
+    statistics_box = gr.Textbox(
+    label="面试统计"
     )
 
     submit_btn.click(

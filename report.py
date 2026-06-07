@@ -35,6 +35,7 @@ def generate_report(results):
     )
 
     return response["message"]["content"]
+
 def generate_skill_report(results):
 
     report = ""
@@ -47,3 +48,39 @@ def generate_skill_report(results):
         )
 
     return report
+
+def generate_statistics(results):
+
+    scores = [
+        item["score"]
+        for item in results
+    ]
+
+    avg_score = round(
+        sum(scores)/len(scores),
+        2
+    )
+
+    highest = max(scores)
+
+    lowest = min(scores)
+
+    return (
+        f"平均分：{avg_score}\n"
+        f"最高分：{highest}\n"
+        f"最低分：{lowest}"
+    )
+
+def generate_skill_scores(results):
+
+    skill_scores = {}
+
+    for item in results:
+
+        skill = item["skill"]
+
+        score = item["score"]
+
+        skill_scores[skill] = score
+
+    return skill_scores
