@@ -1,6 +1,5 @@
 import gradio as gr
 from report import (generate_report,generate_skill_report)
-from questions import questions
 from scorer import score_answer
 from pdf_export import export_pdf
 from history import (
@@ -14,11 +13,14 @@ from report import (
     generate_skill_scores
 )
 from datetime import datetime
+from question_generator import generate_questions
 
 
 selected_job = "AI应用开发工程师"
 
-question_list = questions[selected_job]
+question_list = generate_questions(
+    selected_job
+)
 
 current_index = 0
 
@@ -182,7 +184,7 @@ def switch_job(job):
 
     selected_job = job
 
-    question_list = questions[job]
+    question_list = generate_questions(job)
 
     current_index = 0
 
@@ -190,20 +192,29 @@ def switch_job(job):
 
     return question_list[0]["question"]
 
+def regenerate_questions():
 
+    global question_list
+    global current_index
+
+    question_list = generate_questions(
+        selected_job
+    )
+
+    current_index = 0
+
+    return question_list[0]["question"]
 
 with gr.Blocks() as demo:
 
     gr.Markdown(
-        "# InterviewGPT V4.2"
+    "# InterviewGPT V6.0"
     )
 
-    job_dropdown = gr.Dropdown(
-    choices=list(
-        questions.keys()
-    ),
+    job_input = gr.Textbox(
     value="AI应用开发工程师",
-    label="选择岗位"
+    label="岗位名称",
+    placeholder="例如：Python开发工程师"
     )
 
     question_box = gr.Textbox(
@@ -246,6 +257,14 @@ with gr.Blocks() as demo:
 
     stats_btn = gr.Button(
     "查看详细统计"
+    )
+
+    load_job_btn = gr.Button(
+    "生成面试题"
+    )
+
+    regenerate_btn = gr.Button(
+    "重新生成题目"
     )
 
     history_box = gr.Textbox(
@@ -314,9 +333,20 @@ with gr.Blocks() as demo:
     outputs=statistics_box
     )
 
-    job_dropdown.change(
+    regenerate_btn.click(
+    regenerate_questions,
+    outputs=question_box
+    )
+
+    load_job_btn.click(
     switch_job,
-    inputs=job_dropdown,
+    inputs=job_input,
+    outputs=question_box
+    )
+
+    job_input.submit(
+    switch_job,
+    inputs=job_input,
     outputs=question_box
     )
 
