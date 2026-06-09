@@ -1,233 +1,169 @@
-# InterviewGPT V6.0
+# InterviewGPT
 
-## 项目简介
+<div align="center">
 
-InterviewGPT 是一个基于 Ollama + Qwen3 + Gradio 开发的本地 AI 面试系统。
+### 🚀 AI-Powered Multi-Role Interview Simulation Platform
 
-系统支持：
+基于 **Ollama + Gradio + Python** 构建的智能面试系统，支持多岗位面试、AI评分、追问机制、能力分析、雷达图可视化与 PDF 报告生成。
 
-* AI动态生成面试题
-* AI自动评分
-* AI面试反馈
-* AI面试报告
-* 能力画像分析
-* 雷达图可视化
-* PDF报告导出
-* 历史记录管理
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Gradio](https://img.shields.io/badge/Gradio-6.x-orange)
+![Ollama](https://img.shields.io/badge/Ollama-Local%20LLM-green)
+![Version](https://img.shields.io/badge/Version-v6.1.1-red)
 
-无需调用 OpenAI API，即可在本地完成完整的 AI 面试流程。
+</div>
 
 ---
 
-# V6.0 更新内容
+# ✨ 项目简介
 
-## AI动态出题系统
+InterviewGPT 是一个本地运行的 AI 面试官系统。
 
-从固定题库升级为 AI 动态生成题目。
+用户选择目标岗位后，系统将自动生成专业面试题，对回答进行智能评分，并根据回答质量生成追问问题，最终形成完整的能力分析报告。
 
-用户输入任意岗位：
+项目从 V1 持续迭代至 V6，目前已具备完整的 AI 面试流程。
+
+---
+
+# 🎯 核心功能
+
+## 多岗位面试
+
+支持以下岗位：
 
 * AI应用开发工程师
 * Python开发工程师
 * 数据分析师
 * Java开发工程师
 * 前端开发工程师
-* 产品经理
 * 测试工程师
+* 产品经理
 * 算法工程师
 * 机器学习工程师
 
-系统自动调用 Qwen3 生成对应面试题。
-
 ---
 
-## 任意岗位支持
+## AI智能评分
 
-V5 版本：
+根据回答内容进行分析：
 
-```text
-固定岗位
-↓
-固定题库
-```
+* 技术准确性
+* 逻辑表达能力
+* 解决问题能力
+* 项目经验匹配度
 
-V6 版本：
+输出：
 
-```text
-输入岗位
-↓
-AI生成题目
-↓
-开始面试
-```
-
-支持任何技术岗位。
-
-示例：
-
-```text
-机器学习工程师
-```
-
-自动生成：
-
-```text
-什么是监督学习？
-什么是过拟合？
-什么是交叉验证？
-什么是随机森林？
-什么是XGBoost？
-```
-
----
-
-## 重新生成题目
-
-新增：
-
-```text
-重新生成题目
-```
-
-按钮。
-
-用户可针对当前岗位重新生成全新面试题。
-
-系统自动：
-
-* 重新生成题库
-* 重置面试进度
-* 从第一题开始
-
----
-
-## 面试流程
-
-```text
-输入岗位
-      ↓
-AI生成题目
-      ↓
-开始面试
-      ↓
-AI评分
-      ↓
-AI反馈
-      ↓
-AI总结报告
-      ↓
-能力画像
-      ↓
-PDF导出
-```
-
----
-
-# 当前功能
-
-## AI动态出题
-
-支持任意岗位自动生成题目。
-
----
-
-## AI评分系统
-
-基于本地大模型完成：
-
-* 面试评分
+* 分数
 * 优点分析
 * 缺点分析
 * 改进建议
 
 ---
 
-## 多轮面试
+## AI追问机制
 
-支持连续多轮提问。
-
-系统自动：
-
-* 切换题目
-* 记录回答
-* 保存成绩
-
----
-
-## AI面试报告
-
-面试结束后自动生成：
-
-* 综合评价
-* 优势分析
-* 不足分析
-* 学习建议
-
----
-
-## 能力画像
-
-根据各题得分生成能力分析。
-
-例如：
+当回答质量较高时：
 
 ```text
-RAG：8分
-LangChain：7分
-Prompt Engineering：9分
-Agent：6分
+面试题
+ ↓
+用户回答
+ ↓
+AI分析
+ ↓
+生成追问问题
+ ↓
+用户继续作答
 ```
+
+模拟真实技术面试过程。
 
 ---
 
-## 雷达图分析
+## 面试统计分析
 
-自动生成技能雷达图。
+自动统计：
 
-展示：
+* 完成题数
+* 平均分
+* 最高分
+* 最低分
 
-* 技能强项
-* 技能短板
-* 综合能力分布
+帮助用户了解整体面试表现。
+
+---
+
+## 技能雷达图
+
+自动生成能力画像：
+
+* Python
+* RAG
+* Prompt Engineering
+* LangChain
+* Agent
+* Embedding
+
+支持中文显示。
 
 ---
 
 ## PDF报告导出
 
-自动导出：
+生成完整面试报告：
 
-* 岗位信息
-* 面试时长
-* 面试统计
-* AI报告
-* 雷达图
+包含：
 
----
-
-## 历史记录
-
-自动保存历史面试记录。
-
-支持：
-
-* 岗位记录
-* 技能记录
-* 得分记录
+* 岗位名称
+* 面试时间
+* 面试记录
+* AI评价
+* 能力雷达图
+* 综合分析
 
 ---
 
-# 项目结构
+# 🏗️ 技术架构
+
+```text
+                ┌────────────┐
+                │   Gradio   │
+                └─────┬──────┘
+                      │
+                      ▼
+              ┌─────────────┐
+              │ InterviewGPT│
+              └─────┬───────┘
+                    │
+     ┌──────────────┼──────────────┐
+     ▼              ▼              ▼
+
+ Question      AI Scoring      Follow-up
+
+     ▼              ▼              ▼
+
+ History      Statistics      PDF Report
+
+     ▼
+
+ Radar Chart
+```
+
+---
+
+# 📁 项目结构
 
 ```text
 interview-gpt/
 
 ├── app.py
+├── questions.py
 ├── scorer.py
 ├── report.py
 ├── history.py
 ├── pdf_export.py
 ├── radar_chart.py
-├── question_generator.py
 ├── history.json
 ├── requirements.txt
 └── README.md
@@ -235,45 +171,29 @@ interview-gpt/
 
 ---
 
-# 技术栈
+# ⚙️ 环境配置
 
-## AI
+## 创建虚拟环境
 
-* Ollama
-* Qwen3:8B
+```bash
+python -m venv venv
+```
 
-## 前端
+Windows：
 
-* Gradio
+```bash
+venv\Scripts\activate
+```
 
-## 后端
+Mac / Linux：
 
-* Python
-
-## 数据处理
-
-* JSON
-
-## 数据分析
-
-* Pandas
-
-## 可视化
-
-* Matplotlib
-
-## PDF生成
-
-* ReportLab
-
-## 版本管理
-
-* Git
-* GitHub
+```bash
+source venv/bin/activate
+```
 
 ---
 
-# 安装依赖
+## 安装依赖
 
 ```bash
 pip install -r requirements.txt
@@ -281,27 +201,29 @@ pip install -r requirements.txt
 
 ---
 
-# 安装 Ollama
+## 启动 Ollama
 
-下载并安装：
-
-https://ollama.com
-
-拉取模型：
+确保本地模型已安装：
 
 ```bash
-ollama pull qwen3:8b
+ollama run qwen3
+```
+
+或：
+
+```bash
+ollama run llama3
 ```
 
 ---
 
-# 启动项目
+## 运行项目
 
 ```bash
 python app.py
 ```
 
-启动后访问：
+浏览器访问：
 
 ```text
 http://127.0.0.1:7860
@@ -309,90 +231,56 @@ http://127.0.0.1:7860
 
 ---
 
-# 版本迭代
+# 📊 当前版本
 
-## V1
+## V6.1.1
 
-* AI评分系统
+已实现：
 
-## V2
+✅ 多岗位面试
 
-* 多轮面试
+✅ AI评分系统
 
-## V3
+✅ AI追问机制
 
-* AI面试报告
+✅ 回答质量检测
 
-## V4
+✅ 面试统计分析
 
-* PDF导出
-* 雷达图分析
-* 历史记录
+✅ 技能雷达图
 
-## V5
+✅ PDF报告导出
 
-* 多岗位面试系统
+✅ 中文图表支持
 
-## V6
-
-* AI动态出题系统
-* 任意岗位支持
-* 重新生成题目
+✅ 历史记录保存
 
 ---
 
-# 项目亮点
+# 🚀 后续规划
 
-✅ 本地部署
+## V6.2
 
-✅ Ollama大模型
-
-✅ AI动态出题
-
-✅ AI自动评分
-
-✅ AI面试报告
-
-✅ 能力画像分析
-
-✅ 雷达图生成
-
-✅ PDF导出
-
-✅ 历史记录管理
-
-✅ 任意岗位支持
-
----
-
-# 下一版本规划
-
-## V6.1
-
-AI追问机制
-
-根据回答质量动态决定：
-
-* 继续追问
-* 深入提问
-* 切换下一题
-
-实现更接近真实面试官的交互体验。
+* 语音输入
+* 语音面试
 
 ## V7.0
 
-SQLite数据库
-
-替代 history.json
-
-支持：
-
-* 数据查询
-* 数据统计
-* 用户管理
+* RAG知识库面试
+* 企业岗位定制题库
 
 ## V8.0
 
-FastAPI接口化
+* 面试聊天记录数据库
+* 用户登录系统
+* 面试成绩排行榜
 
-实现前后端分离部署。
+---
+
+# 👨‍💻 Author
+
+Lenlon Alice
+
+Data Analysis & AI Application Development
+
+Built with ❤️ using Python + Gradio + Ollama

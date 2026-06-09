@@ -14,7 +14,11 @@ from report import (
 )
 from datetime import datetime
 from question_generator import generate_questions
+from followup import (
+    generate_followup
+)
 
+followup_count = 0
 
 selected_job = "AI应用开发工程师"
 
@@ -28,6 +32,12 @@ results = []
 
 interview_start_time = None
 
+is_followup = False
+
+current_question_text = ""
+
+current_question_text = question_list[current_index]["question"]
+
 def get_current_question():
 
     global current_index
@@ -39,11 +49,33 @@ def get_current_question():
         ]["question"]
 
     return "面试结束"
+
+def quick_check(answer):
+
+    if len(answer.strip()) < 20:
+
+        return True
+
+    return False
+
 def submit_answer(answer):
 
     global current_index
     global results
     global interview_start_time
+    global is_followup
+
+    if is_followup:
+
+        is_followup = False
+
+        followup_count = 0
+
+        current_index += 1
+
+    else:
+
+        pass
 
     if interview_start_time is None:
         interview_start_time = datetime.now()
@@ -63,6 +95,31 @@ def submit_answer(answer):
         question,
         answer
     )
+
+    followup = generate_followup(
+    question,
+    answer
+    )
+
+    if "NO_FOLLOWUP" not in followup:
+
+        if followup_count < 1:
+
+            followup_count += 1
+
+            is_followup = True
+
+            return (
+                followup,
+                feedback
+            )
+
+    if quick_check(answer):
+
+        return (
+        current_question_text,
+        "回答过短，请补充更多细节。"
+        )
 
     results.append(
     {
@@ -205,10 +262,22 @@ def regenerate_questions():
 
     return question_list[0]["question"]
 
+def skip_question():
+
+    global current_index
+
+    current_index += 1
+
+    if current_index >= len(question_list):
+
+        return "面试结束"
+
+    return question_list[current_index]["question"]
+
 with gr.Blocks() as demo:
 
     gr.Markdown(
-    "# InterviewGPT V6.0"
+    "# InterviewGPT V6.1"
     )
 
     job_input = gr.Textbox(
@@ -236,6 +305,18 @@ with gr.Blocks() as demo:
         "提交答案"
     )
 
+    skip_btn = gr.Button(
+        "跳过本题"
+    )
+
+    load_job_btn = gr.Button(
+    "生成面试题"
+    )
+
+    regenerate_btn = gr.Button(
+    "重新生成题目"
+    )
+
     report_btn = gr.Button(
         "查看成绩"
     )
@@ -257,14 +338,6 @@ with gr.Blocks() as demo:
 
     stats_btn = gr.Button(
     "查看详细统计"
-    )
-
-    load_job_btn = gr.Button(
-    "生成面试题"
-    )
-
-    regenerate_btn = gr.Button(
-    "重新生成题目"
     )
 
     history_box = gr.Textbox(
@@ -341,6 +414,11 @@ with gr.Blocks() as demo:
     load_job_btn.click(
     switch_job,
     inputs=job_input,
+    outputs=question_box
+    )
+
+    skip_btn.click(
+    skip_question,
     outputs=question_box
     )
 
