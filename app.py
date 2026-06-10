@@ -17,6 +17,7 @@ from question_generator import generate_questions
 from followup import (
     generate_followup
 )
+from speech import speech_to_text
 
 followup_count = 0
 
@@ -49,6 +50,24 @@ def get_current_question():
         ]["question"]
 
     return "面试结束"
+
+def get_progress():
+
+    total = len(question_list)
+
+    current = min(
+        current_index + 1,
+        total
+    )
+
+    percent = int(
+        current / total * 100
+    )
+
+    return (
+        f"第 {current} 题 / 共 {total} 题"
+        f"\n完成度：{percent}%"
+    )
 
 def quick_check(answer):
 
@@ -84,8 +103,10 @@ def submit_answer(answer):
 
         return (
             "面试结束",
-            "已经没有题目了"
-        )
+            "已经没有题目了",
+             get_progress()
+             )
+                  
 
     question = question_list[
         current_index
@@ -111,7 +132,8 @@ def submit_answer(answer):
 
             return (
                 followup,
-                feedback
+                feedback,
+                get_progress()
             )
 
     if quick_check(answer):
@@ -146,7 +168,8 @@ def submit_answer(answer):
 
     return (
         next_question,
-        feedback
+        feedback,
+        get_progress()
     )
 
 def create_ai_report():
@@ -247,7 +270,10 @@ def switch_job(job):
 
     results = []
 
-    return question_list[0]["question"]
+    return (
+    question_list[0]["question"],
+    get_progress()
+)
 
 def regenerate_questions():
 
@@ -260,7 +286,10 @@ def regenerate_questions():
 
     current_index = 0
 
-    return question_list[0]["question"]
+    return (
+    question_list[0]["question"],
+    get_progress()
+    )
 
 def skip_question():
 
@@ -270,20 +299,47 @@ def skip_question():
 
     if current_index >= len(question_list):
 
-        return "面试结束"
+        return (
+            "面试结束",
+            get_progress()
+        )
 
-    return question_list[current_index]["question"]
+    return (
+        question_list[current_index]["question"],
+        get_progress()
+    )
+
+def convert_voice(audio_file):
+
+    if audio_file is None:
+
+        return ""
+
+    return speech_to_text(
+        audio_file
+    )
 
 with gr.Blocks() as demo:
 
     gr.Markdown(
-    "# InterviewGPT V6.1"
+        "# InterviewGPT V6.3"
     )
 
     job_input = gr.Textbox(
-    value="AI应用开发工程师",
-    label="岗位名称",
-    placeholder="例如：Python开发工程师"
+        value="AI应用开发工程师",
+        label="岗位名称",
+        placeholder="例如：Python开发工程师"
+    )
+
+    audio_input = gr.Audio(
+        sources=["microphone"],
+        type="filepath",
+        label="语音回答"
+    )
+
+    progress_box = gr.Textbox(
+        value=get_progress(),
+        label="面试进度"
     )
 
     question_box = gr.Textbox(
@@ -301,6 +357,10 @@ with gr.Blocks() as demo:
         lines=10
     )
 
+    voice_btn = gr.Button(
+        "语音转文字"
+    )
+
     submit_btn = gr.Button(
         "提交答案"
     )
@@ -310,49 +370,49 @@ with gr.Blocks() as demo:
     )
 
     load_job_btn = gr.Button(
-    "生成面试题"
+        "生成面试题"
     )
 
     regenerate_btn = gr.Button(
-    "重新生成题目"
+        "重新生成题目"
     )
 
     report_btn = gr.Button(
         "查看成绩"
     )
     ai_report_btn = gr.Button(
-    "生成面试报告"
+        "生成面试报告"
     )
 
     skill_btn = gr.Button(
-    "能力画像"
+        "能力画像"
     )
 
     pdf_btn = gr.Button(
-    "导出PDF报告"
+        "导出PDF报告"
     )
 
     history_btn = gr.Button(
-    "查看历史记录"
+        "查看历史记录"
     )
 
     stats_btn = gr.Button(
-    "查看详细统计"
+        "查看详细统计"
     )
 
     history_box = gr.Textbox(
-    label="历史记录",
-    lines=15
+        label="历史记录",
+        lines=15
     )
 
     ai_report_box = gr.Textbox(
-    label="AI面试报告",
-    lines=15
+        label="AI面试报告",
+        lines=15
     )
 
     skill_box = gr.Textbox(
-    label="能力画像",
-    lines=10
+        label="能力画像",
+        lines=10
     )
 
     report_box = gr.Textbox(
@@ -360,11 +420,17 @@ with gr.Blocks() as demo:
     )
 
     pdf_status = gr.Textbox(
-    label="PDF状态"
+        label="PDF状态"
     )
 
     statistics_box = gr.Textbox(
-    label="面试统计"
+        label="面试统计"
+    )
+
+    voice_btn.click(
+        convert_voice,
+        inputs=audio_input,
+        outputs=answer_box
     )
 
     submit_btn.click(
@@ -372,7 +438,8 @@ with gr.Blocks() as demo:
         inputs=answer_box,
         outputs=[
             question_box,
-            feedback_box
+            feedback_box,
+            progress_box
         ]
     )
 
@@ -392,40 +459,49 @@ with gr.Blocks() as demo:
     )
 
     pdf_btn.click(
-    create_pdf,
-    outputs=pdf_status
+        create_pdf,
+        outputs=pdf_status
     )
 
     history_btn.click(
-    load_history,
-    outputs=history_box
+        load_history,
+        outputs=history_box
     )
 
     stats_btn.click(
-    lambda: generate_statistics(results),
-    outputs=statistics_box
+        lambda: generate_statistics(results),
+        outputs=statistics_box
     )
 
     regenerate_btn.click(
     regenerate_questions,
-    outputs=question_box
-    )
+    outputs=[
+        question_box,
+        progress_box
+    ]
+)
 
     load_job_btn.click(
-    switch_job,
-    inputs=job_input,
-    outputs=question_box
+        switch_job,
+        inputs=job_input,
+        outputs=[
+            question_box,
+            progress_box
+        ]
     )
 
     skip_btn.click(
-    skip_question,
-    outputs=question_box
+        skip_question,
+        outputs=[
+            question_box,
+            progress_box
+        ]
     )
 
     job_input.submit(
-    switch_job,
-    inputs=job_input,
-    outputs=question_box
+        switch_job,
+        inputs=job_input,
+        outputs=question_box
     )
 
 
