@@ -24,6 +24,8 @@ from database import get_all_records
 from database import create_user
 from database import get_user
 from database import update_user_score
+from database import get_leaderboard
+from database import get_user_profile
 
 followup_count = 0
 
@@ -75,10 +77,11 @@ def get_progress():
 
     total = len(question_list)
 
-    current = min(
-        current_index + 1,
-        total
-    )
+    if current_index >= total:
+
+        return "面试已结束"
+
+    current = current_index + 1
 
     percent = int(
         current / total * 100
@@ -115,6 +118,50 @@ def load_history_db():
 分数：{row[5]}
 ----------------
 """
+
+    return text
+
+def show_leaderboard():
+
+    rows = get_leaderboard()
+
+    if len(rows) == 0:
+
+        return "暂无排行榜数据"
+
+    text = "🏆 InterviewGPT 排行榜\n\n"
+
+    rank = 1
+
+    for row in rows:
+
+        username = row[0]
+
+        total_score = row[1]
+
+        count = row[2]
+
+        avg = 0
+
+        if count > 0:
+            avg = round(
+                total_score / count,
+                1
+            )
+
+        text += f"""
+第 {rank} 名
+
+用户：{username}
+
+平均分：{avg}
+
+面试次数：{count}
+
+----------------
+"""
+
+        rank += 1
 
     return text
 
@@ -181,7 +228,7 @@ def submit_answer(answer):
     if quick_check(answer):
 
         return (
-        current_question_text,
+        question,
         "回答过短，请补充更多细节。",
         get_progress()
         )
@@ -213,15 +260,23 @@ def submit_answer(answer):
         next_question = "面试结束"
         save_history(results)
 
-        avg = sum(
-            r["score"]
-            for r in results
-        ) / len(results)
+        if len(results) > 0:
 
-        update_user_score(
-            current_user,
-           int(avg)
-        )
+            avg = sum(
+                r["score"]
+                for r in results
+            ) / len(results)
+
+            update_user_score(
+                current_user,
+                int(avg)
+            )
+            if current_user != "":
+
+                update_user_score(
+                    current_user,
+                    int(avg)
+                    )
 
     return (
         next_question,
@@ -496,6 +551,10 @@ with gr.Blocks() as demo:
         "查看详细统计"
     )
 
+    leaderboard_btn = gr.Button(
+    "排行榜"
+    )
+
     profile_btn = gr.Button(
     "个人中心"
     )
@@ -529,6 +588,11 @@ with gr.Blocks() as demo:
 
     statistics_box = gr.Textbox(
         label="面试统计"
+    )
+
+    leaderboard_box = gr.Textbox(
+    label="排行榜",
+    lines=15
     )
 
     voice_btn.click(
@@ -611,6 +675,11 @@ with gr.Blocks() as demo:
     profile_btn.click(
     show_profile,
     outputs=profile_box
+    )
+
+    leaderboard_btn.click(
+    show_leaderboard,
+    outputs=leaderboard_box
     )
 
     job_input.submit(

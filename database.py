@@ -244,3 +244,32 @@ def get_user_profile(username):
     conn.close()
 
     return row
+
+def get_leaderboard():
+
+    conn = sqlite3.connect(
+        "interview.db"
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT
+        username,
+        total_score,
+        interview_count
+    FROM users
+
+    WHERE interview_count > 0
+
+    ORDER BY
+    CAST(total_score AS FLOAT)
+    /
+    interview_count DESC
+    """)
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return rows
