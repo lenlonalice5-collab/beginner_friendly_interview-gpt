@@ -54,6 +54,21 @@ def init_db():
     )
     """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS interview_sessions(
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        username TEXT,
+
+        avg_score REAL,
+
+        duration REAL,
+
+        create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+
     conn.commit()
 
     conn.close()
@@ -273,3 +288,69 @@ def get_leaderboard():
     conn.close()
 
     return rows
+
+def save_session(
+    username,
+    avg_score,
+    duration
+):
+
+    conn = sqlite3.connect(
+        "interview.db"
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO interview_sessions
+    (
+        username,
+        avg_score,
+        duration
+    )
+
+    VALUES
+    (
+        ?,
+        ?,
+        ?
+    )
+    """,
+
+    (
+        username,
+        avg_score,
+        duration
+    )
+    )
+
+    conn.commit()
+
+    conn.close()
+
+def get_score_trend(username):
+
+    conn = sqlite3.connect(
+        "interview.db"
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT avg_score
+    FROM interview_sessions
+    WHERE username = ?
+    ORDER BY id
+    """,
+
+    (username,)
+    )
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return [
+        row[0]
+        for row in rows
+    ]

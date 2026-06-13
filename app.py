@@ -26,7 +26,17 @@ from database import get_user
 from database import update_user_score
 from database import get_leaderboard
 from database import get_user_profile
+from database import (
+    init_db,
+    save_record,
+    get_all_records,
+    save_session,
+    get_score_trend
+)
 import requests
+from trend_chart import (
+    create_trend_chart
+)
 
 followup_count = 0
 
@@ -51,6 +61,40 @@ current_user = ""
 current_question_text = question_list[current_index]["question"]
 
 init_db()
+
+def show_trend():
+
+    scores = get_score_trend(
+        current_user
+    )
+
+    if len(scores) == 0:
+
+        return None
+
+    create_trend_chart(
+        scores
+    )
+
+    return "score_trend.png"
+
+def get_duration_minutes():
+
+    global interview_start_time
+
+    if interview_start_time is None:
+
+        return 0
+
+    end_time = datetime.now()
+
+    duration = end_time - interview_start_time
+
+    return round(
+        duration.total_seconds()/60,
+        2
+    )
+
 
 def login(username):
 
@@ -273,6 +317,20 @@ def submit_answer(answer):
     else:
 
         next_question = "面试结束"
+
+        avg_score = sum(
+            r["score"]
+            for r in results
+        ) / len(results)
+
+        duration = get_duration_minutes()
+
+        save_session(
+            current_user,
+            avg_score,
+            duration
+        )
+
         save_history(results)
 
         if len(results) > 0:
@@ -472,10 +530,12 @@ def show_profile():
 平均分：{avg:.1f}
 """
 
+
+
 with gr.Blocks() as demo:
 
     gr.Markdown(
-        "# InterviewGPT V6.5"
+        "# InterviewGPT V6.6"
     )
 
     username_input = gr.Textbox(
@@ -558,6 +618,10 @@ with gr.Blocks() as demo:
         "导出PDF报告"
     )
 
+    trend_btn = gr.Button(
+    "成绩趋势"
+)
+
     history_btn = gr.Button(
         "查看历史记录"
     )
@@ -605,6 +669,10 @@ with gr.Blocks() as demo:
         label="面试统计"
     )
 
+    trend_image = gr.Image(
+    label="成绩趋势图"
+)
+
     leaderboard_box = gr.Textbox(
     label="排行榜",
     lines=15
@@ -650,6 +718,11 @@ with gr.Blocks() as demo:
         load_history_db,
         outputs=history_box
     )
+
+    trend_btn.click(
+    show_trend,
+    outputs=trend_image
+)
 
     stats_btn.click(
         lambda: generate_statistics(results),
