@@ -26,6 +26,7 @@ from database import get_user
 from database import update_user_score
 from database import get_leaderboard
 from database import get_user_profile
+import requests
 
 followup_count = 0
 
@@ -201,10 +202,24 @@ def submit_answer(answer):
         current_index
     ]["question"]
 
-    score, feedback = score_answer(
-        question,
-        answer
-    )
+    response = requests.post(
+
+    "http://127.0.0.1:8000/score",
+
+    json={
+
+        "question": question,
+
+        "answer": answer
+
+    }
+
+)
+    data = response.json()
+
+    score = data["score"]
+
+    feedback = data["feedback"]
 
     followup = generate_followup(
     question,
@@ -460,7 +475,7 @@ def show_profile():
 with gr.Blocks() as demo:
 
     gr.Markdown(
-        "# InterviewGPT V6.4"
+        "# InterviewGPT V6.5"
     )
 
     username_input = gr.Textbox(

@@ -8,23 +8,24 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-blue">
   <img src="https://img.shields.io/badge/Gradio-WebUI-orange">
-  <img src="https://img.shields.io/badge/DeepSeek-LLM-green">
+  <img src="https://img.shields.io/badge/FastAPI-Backend-green">
+  <img src="https://img.shields.io/badge/SQLite-Database-blue">
+  <img src="https://img.shields.io/badge/DeepSeek-LLM-success">
   <img src="https://img.shields.io/badge/Whisper-ASR-purple">
-  <img src="https://img.shields.io/badge/SQLite-Database-yellow">
-  <img src="https://img.shields.io/badge/Version-v6.4-red">
+  <img src="https://img.shields.io/badge/Version-v6.5-red">
 </p>
 
 ---
 
 # 📖 Project Overview | 项目简介
 
+InterviewGPT 是一个基于大语言模型（LLM）的智能面试模拟系统。
+
+系统能够根据岗位自动生成面试题、实时评分、生成追问、构建能力画像、生成面试报告，并支持本地语音识别、数据库存储、用户管理以及 API 接口化部署。
+
 InterviewGPT is an AI-powered mock interview platform built with Large Language Models.
 
-It automatically generates interview questions, evaluates candidate responses, creates follow-up questions, performs competency analysis, stores interview records, and generates professional interview reports.
-
-InterviewGPT 是一个基于大语言模型（LLM）的智能模拟面试系统。
-
-系统能够自动生成面试题、分析候选人回答、动态追问、能力评估、数据存储，并生成专业面试报告。
+It automatically generates interview questions, evaluates answers, creates follow-up questions, analyzes competencies, stores interview records, and supports local speech recognition and API deployment.
 
 ---
 
@@ -34,8 +35,8 @@ InterviewGPT 是一个基于大语言模型（LLM）的智能模拟面试系统�
 
 智能面试模拟
 
-* 岗位定制化面试题生成
-* 多岗位扩展支持
+* 自动生成面试题
+* 支持多岗位面试
 * 模拟真实技术面试流程
 * 重新生成题目
 
@@ -46,9 +47,9 @@ InterviewGPT 是一个基于大语言模型（LLM）的智能模拟面试系统�
 AI 回答评分
 
 * 自动评分
-* 回答质量分析
-* 优缺点反馈
-* 综合能力评估
+* 回答分析
+* 优缺点评估
+* 综合反馈
 
 ---
 
@@ -56,35 +57,32 @@ AI 回答评分
 
 智能追问机制
 
-* AI 自动生成追问
-* 基于回答内容继续深入
+* 根据回答生成追问
+* 模拟真实面试官逻辑
 * 自动控制追问轮次
-* 提高面试真实性
 
 ---
 
-## 🎤 Local Speech Recognition
+## 🎤 Whisper Speech Recognition
 
 本地语音识别
 
-Powered by Whisper
-
-* 麦克风录音
+* Whisper 本地部署
 * 中文语音转文字
-* 完全本地运行
-* 无需第三方语音服务
-* 支持离线环境
+* 麦克风录音输入
+* 离线运行
+* 无需第三方 ASR 服务
 
 ---
 
-## 📊 Interview Progress Tracking
+## 📊 Interview Statistics
 
-面试进度跟踪
+面试统计
 
-* 当前题目进度
-* 完成百分比
-* 面试时长统计
-* 实时更新
+* 完成题目数
+* 平均得分
+* 面试时长
+* 技能统计
 
 ---
 
@@ -92,7 +90,7 @@ Powered by Whisper
 
 能力画像分析
 
-自动统计：
+支持：
 
 * Python
 * Machine Learning
@@ -101,11 +99,11 @@ Powered by Whisper
 * Data Analysis
 * LLM Engineering
 
-等能力维度表现。
+等多个维度分析。
 
 ---
 
-## 📈 Radar Chart Visualization
+## 📈 Radar Chart
 
 能力雷达图
 
@@ -113,8 +111,7 @@ Powered by Whisper
 
 * 技能评分
 * 能力分布
-* 雷达图可视化
-* PDF 集成
+* 图形可视化
 
 ---
 
@@ -122,13 +119,12 @@ Powered by Whisper
 
 AI 面试报告
 
-自动生成：
+自动输出：
 
 * 综合评价
 * 优势分析
 * 不足分析
-* 学习建议
-* 成长方向
+* 提升建议
 
 ---
 
@@ -136,114 +132,124 @@ AI 面试报告
 
 PDF 导出
 
-支持导出：
+包含：
 
-* AI面试报告
-* 技能分析
+* 面试报告
 * 面试统计
-* 面试时长
-* 雷达图
-
----
-
-## 💾 Interview History
-
-历史记录管理
-
-* 本地历史记录
-* JSON 存档
-* 历史成绩查看
-
----
-
-## 🗄️ SQLite Database
-
-数据库支持（V6.3）
-
-InterviewGPT now supports SQLite persistence.
-
-InterviewGPT 已支持 SQLite 数据存储。
-
-### interviews
-
-存储：
-
+* 能力雷达图
 * 岗位信息
-* 面试题目
-* 用户回答
-* AI评分
-* 时间记录
+* 面试时长
 
-### users
+---
 
-存储：
+## 💾 SQLite Database
 
-* 用户名
-* 累计得分
-* 面试次数
-* 注册时间
+数据库管理
 
-### mistakes
+InterviewGPT V6.3 开始支持 SQLite。
 
-预留错题本功能
+支持存储：
+
+* 用户信息
+* 面试记录
+* 成绩记录
+* 错题记录
 
 ---
 
 ## 👤 User System
 
-用户系统（V6.4）
+用户系统
 
-支持：
+InterviewGPT V6.4 新增：
 
+* 用户注册
 * 用户登录
-* 自动创建用户
-* 成绩绑定用户
-* 用户资料查看
-* 累计面试统计
+* 用户成绩统计
+* 面试次数统计
+* 用户档案
+
+---
+
+## 🏆 Leaderboard
+
+排行榜系统
+
+根据：
+
+* 平均成绩
+* 面试次数
+
+自动生成排行榜。
+
+---
+
+## 🚀 FastAPI Backend
+
+接口化部署
+
+InterviewGPT V6.5 开始支持：
+
+* FastAPI REST API
+* Swagger 文档
+* 前后端分离
+* API 调用评分服务
+* API 调用题目生成服务
+
+实现从单体应用向 AI SaaS 架构升级。
 
 ---
 
 # 🏗️ System Architecture | 系统架构
 
 ```text
-Gradio UI
-    │
-    ▼
-InterviewGPT Core
-    │
- ┌──┼───────────────┐
- ▼  ▼               ▼
+                    ┌───────────────┐
+                    │    Gradio UI   │
+                    └───────┬───────┘
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │    FastAPI     │
+                    └───────┬───────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
 
-Question      Scoring
-Generator     Engine
+ Question API        Score API        Follow-up API
 
- ▼
-DeepSeek API
+        ▼                   ▼                   ▼
 
- ▼
+                 DeepSeek LLM Service
 
-Follow-up Engine
+                            │
+                            ▼
 
- ▼
+                     SQLite Database
 
-Report System
- ├─ Statistics
- ├─ Skill Analysis
- ├─ Radar Chart
- └─ PDF Export
+                            │
+          ┌─────────────────┼─────────────────┐
+          ▼                 ▼                 ▼
 
- ▼
+      Users          Interviews        Mistakes
 
-Whisper ASR
-(Voice → Text)
+                            │
+                            ▼
 
- ▼
+                    Report System
 
-SQLite Database
- ├─ Users
- ├─ Interviews
- └─ Mistakes
+                            │
+          ┌─────────────────┼─────────────────┐
+          ▼                 ▼                 ▼
+
+      Statistics      Radar Chart      PDF Export
+
+                            │
+                            ▼
+
+                     Whisper ASR
 ```
+
+---
 
 # 📂 Project Structure | 项目结构
 
@@ -251,29 +257,36 @@ SQLite Database
 InterviewGPT/
 
 ├── app.py
+├── api.py
+│
 ├── database.py
-├── speech.py
+├── history.py
+│
 ├── scorer.py
 ├── followup.py
+├── question_generator.py
+│
 ├── report.py
-├── history.py
 ├── radar_chart.py
 ├── pdf_export.py
-├── question_generator.py
-
+│
+├── speech.py
+│
 ├── interview.db
 ├── history.json
-
+│
 ├── reports/
 ├── charts/
-
+│
 ├── requirements.txt
 └── README.md
 ```
 
+---
+
 # 🚀 Installation | 安装
 
-## 1. Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/yourname/interview-gpt.git
@@ -281,7 +294,7 @@ git clone https://github.com/yourname/interview-gpt.git
 cd interview-gpt
 ```
 
-## 2. Create Virtual Environment
+## Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -293,39 +306,77 @@ Windows
 venv\Scripts\activate
 ```
 
-## 3. Install Dependencies
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 4. Install Whisper
+---
+
+## Install Whisper
 
 ```bash
 pip install openai-whisper
 ```
 
-## 5. Install FFmpeg
+---
 
-Verify：
+## Install FastAPI
+
+```bash
+pip install fastapi uvicorn
+```
+
+---
+
+## Install FFmpeg
+
+验证：
 
 ```bash
 ffmpeg -version
 ```
 
-# ▶️ Run
+---
+
+# ▶️ Run Gradio
 
 ```bash
 python app.py
 ```
 
-Open:
+访问：
 
 ```text
 http://127.0.0.1:7860
 ```
 
-# 📊 Current Capabilities | 当前能力
+---
+
+# ▶️ Run FastAPI
+
+```bash
+python -m uvicorn api:app --reload
+```
+
+访问：
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger：
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 📊 Current Capabilities
 
 | Module              | Status |
 | ------------------- | ------ |
@@ -333,36 +384,44 @@ http://127.0.0.1:7860
 | AI Scoring          | ✅      |
 | Follow-up Questions | ✅      |
 | Whisper ASR         | ✅      |
-| Progress Tracking   | ✅      |
+| SQLite Database     | ✅      |
+| User System         | ✅      |
+| Leaderboard         | ✅      |
 | Statistics          | ✅      |
 | Skill Analysis      | ✅      |
 | Radar Chart         | ✅      |
 | PDF Export          | ✅      |
-| History Records     | ✅      |
-| SQLite Database     | ✅      |
-| User System         | ✅      |
+| FastAPI             | ✅      |
+
+---
 
 # 🛣️ Roadmap
 
-## V6.5
+## V6.6
 
-Planned Features
+计划开发：
 
-* 🏆 Leaderboard
-* ❌ Mistake Book
-* 📈 Growth Curve
-* 👥 Multi-user Statistics
-* 🔍 Database Search
+* JWT 用户认证
+* Token 登录
+* API 权限控制
+* 用户会话管理
+* 用户错题本
+
+---
 
 ## V7.0
 
-Long-term Plan
+长期规划：
 
-* RAG Interview System
-* Local LLM Support
-* Multi-modal Interview
-* Online Deployment
-* Enterprise Interview Platform
+* RAG 面试知识库
+* 本地大模型支持
+* 多模态面试
+* Docker部署
+* Vue 前端
+* 在线部署版本
+* 企业级 AI 面试平台
+
+---
 
 # 🧑‍💻 Author
 
@@ -372,11 +431,220 @@ Built with:
 
 * Python
 * Gradio
+* FastAPI
+* SQLite
 * DeepSeek API
 * Whisper
-* SQLite
-* ReportLab
 * Matplotlib
+* ReportLab
+
+---
+
+# 📜 License
+
+MIT License
+
+Feel free to use, modify and contribute.
+
+欢迎 Star ⭐ 和 Fork 🍴
+      Statistics      Radar Chart      PDF Export
+
+                            │
+                            ▼
+
+                     Whisper ASR
+```
+
+---
+
+# 📂 Project Structure | 项目结构
+
+```text
+InterviewGPT/
+
+├── app.py
+├── api.py
+│
+├── database.py
+├── history.py
+│
+├── scorer.py
+├── followup.py
+├── question_generator.py
+│
+├── report.py
+├── radar_chart.py
+├── pdf_export.py
+│
+├── speech.py
+│
+├── interview.db
+├── history.json
+│
+├── reports/
+├── charts/
+│
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# 🚀 Installation | 安装
+
+## Clone Repository
+
+```bash
+git clone https://github.com/yourname/interview-gpt.git
+
+cd interview-gpt
+```
+
+## Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Windows
+
+```bash
+venv\Scripts\activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Install Whisper
+
+```bash
+pip install openai-whisper
+```
+
+---
+
+## Install FastAPI
+
+```bash
+pip install fastapi uvicorn
+```
+
+---
+
+## Install FFmpeg
+
+验证：
+
+```bash
+ffmpeg -version
+```
+
+---
+
+# ▶️ Run Gradio
+
+```bash
+python app.py
+```
+
+访问：
+
+```text
+http://127.0.0.1:7860
+```
+
+---
+
+# ▶️ Run FastAPI
+
+```bash
+python -m uvicorn api:app --reload
+```
+
+访问：
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger：
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 📊 Current Capabilities
+
+| Module              | Status |
+| ------------------- | ------ |
+| Question Generation | ✅      |
+| AI Scoring          | ✅      |
+| Follow-up Questions | ✅      |
+| Whisper ASR         | ✅      |
+| SQLite Database     | ✅      |
+| User System         | ✅      |
+| Leaderboard         | ✅      |
+| Statistics          | ✅      |
+| Skill Analysis      | ✅      |
+| Radar Chart         | ✅      |
+| PDF Export          | ✅      |
+| FastAPI             | ✅      |
+
+---
+
+# 🛣️ Roadmap
+
+## V6.6
+
+计划开发：
+
+* JWT 用户认证
+* Token 登录
+* API 权限控制
+* 用户会话管理
+* 用户错题本
+
+---
+
+## V7.0
+
+长期规划：
+
+* RAG 面试知识库
+* 本地大模型支持
+* 多模态面试
+* Docker部署
+* Vue 前端
+* 在线部署版本
+* 企业级 AI 面试平台
+
+---
+
+# 🧑‍💻 Author
+
+Developed by Lenlon
+
+Built with:
+
+* Python
+* Gradio
+* FastAPI
+* SQLite
+* DeepSeek API
+* Whisper
+* Matplotlib
+* ReportLab
+
+---
 
 # 📜 License
 
